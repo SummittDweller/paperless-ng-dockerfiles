@@ -28,10 +28,10 @@ services:
       timeout: 10s
       retries: 5
     volumes:
-      - /Volumes/Paperless/export:/usr/src/paperless/export
-      - /Volumes/Paperless/consume:/usr/src/paperless/consume
-      - /Volumes/Paperless/data:/usr/src/paperless/data
-      - /Volumes/Paperless/media:/usr/src/paperless/media
+      - ~/mnt/Paperless/export:/usr/src/paperless/export
+      - ~/mnt/Paperless/consume:/usr/src/paperless/consume
+      - ~/mnt/Paperless/data:/usr/src/paperless/data
+      - ~/mnt/Paperless/media:/usr/src/paperless/media
       #- data:/usr/src/paperless/data
       #- media:/usr/src/paperless/media
       #- ./consume:/usr/src/paperless/consume

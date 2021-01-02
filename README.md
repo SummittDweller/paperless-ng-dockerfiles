@@ -22,7 +22,7 @@ Paperless consists of the following components:
 
 *   **The webserver:** This is pretty much the same as in paperless. It serves
     the administration pages, the API, and the new frontend. This is the main
-    tool you'll be using to interact with paperless. 
+    tool you'll be using to interact with paperless.
 
 *   **The consumer:** This is what watches your consumption folder for documents.
     However, the consumer itself does not really consume your documents anymore.
@@ -90,7 +90,7 @@ from above automatically so that it just works and uses sensible defaults for al
 
     Replace the part BEFORE the colon with a local directory of your choice:
 
-        - /Volumes/Paperless/consume:/usr/src/paperless/consume
+        - ~/mnt/Paperless/consume:/usr/src/paperless/consume
 
     Don't change the part after the colon or paperless wont find your documents.
 
@@ -123,4 +123,71 @@ from above automatically so that it just works and uses sensible defaults for al
     Paperless instance at `http://127.0.0.1:8000`. You can login with the
     user and password you just created.
 
+## Customization
 
+In my `docker-compose.yml` the following volumes are mapped for my **Paperless** config:
+
+```
+webserver:
+  ..
+  volumes:
+    - ~/mnt/Paperless/export:/usr/src/paperless/export
+    - ~/mnt/Paperless/consume:/usr/src/paperless/consume
+    - ~/mnt/Paperless/data:/usr/src/paperless/data
+    - ~/mnt/Paperless/media:/usr/src/paperless/media
+```
+
+To support that config one needs to mount my `ReadyNAS` share like so:
+
+```
+╭─mark@Marks-MacBook-Pro ~/mnt
+╰─$ mount_smbfs -f 0775 -d 0775 //mark@readynas/Paperless ~/mnt/Paperless
+Password for readynas: for-my-eyes-only
+╭─mark@Marks-MacBook-Pro ~/mnt
+╰─$ ls -alh
+total 32
+drwxr-xr-x    3 mark  staff    96B Jan  2 16:35 .
+drwxr-xr-x@ 137 mark  staff   4.3K Jan  2 16:54 ..
+drwxr-xr-x    1 mark  staff    16K Jan  2 14:44 Paperless
+```
+
+## Launching `Paperless`
+
+The commands are...
+
+```
+mkdir -p ~/mnt/Paperless
+mount_smbfs -f 0775 -d 0775 //mark@readynas/Paperless ~/mnt/Paperless
+```
+
+Then...
+
+```
+cd ~/GitHub/paperless-ng-dockerfiles
+docker-compose up -d
+docker-compose run --rm webserver createsuperuser
+```
+
+In context...
+
+```
+╭─mark@Marks-MacBook-Pro ~/mnt
+╰─$ cd ~/GitHub/paperless-ng-dockerfiles
+╭─mark@Marks-MacBook-Pro ~/GitHub/paperless-ng-dockerfiles ‹main*›
+╰─$ docker-compose up -d
+Creating network "paperless-ng_default" with the default driver
+Creating paperless-ng_db_1     ... done
+Creating paperless-ng_broker_1 ... done
+Creating paperless-ng_webserver_1 ... done
+```
+
+Then...
+
+ ```
+╭─mark@Marks-MacBook-Pro ~/mnt/Paperless
+╰─$ cd ~/GitHub/paperless-ng-dockerfiles
+╭─mark@Marks-MacBook-Pro ~/GitHub/paperless-ng-dockerfiles ‹main*›
+╰─$ docker-compose run --rm webserver createsuperuser
+Creating paperless-ng_webserver_run ... done
+Mapping UID and GID for paperless:paperless to 501:20
+```
