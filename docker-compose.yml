@@ -28,8 +28,8 @@ services:
       timeout: 10s
       retries: 5
     volumes:
-      - /mnt/paperless/exported:/usr/src/paperless/export
-      - /mnt/paperless/consume:/usr/src/paperless/consume
+      - /home/mark/paperless/exported:/usr/src/paperless/export
+      - /home/mark/paperless/consume:/usr/src/paperless/consume
       - data:/usr/src/paperless/data
       - media:/usr/src/paperless/media
     env_file: docker-compose.env
