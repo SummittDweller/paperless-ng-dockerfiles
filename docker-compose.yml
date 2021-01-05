@@ -28,14 +28,10 @@ services:
       timeout: 10s
       retries: 5
     volumes:
-      - ~/mnt/Paperless/export:/usr/src/paperless/export
-      - ~/mnt/Paperless/consume:/usr/src/paperless/consume
-      #- ~/mnt/Paperless/data:/usr/src/paperless/data
-      #- ~/mnt/Paperless/media:/usr/src/paperless/media
+      - /home/paperless/export:/usr/src/paperless/export
+      - /home/paperless/consume:/usr/src/paperless/consume
       - data:/usr/src/paperless/data
       - media:/usr/src/paperless/media
-      #- ./consume:/usr/src/paperless/consume
-      #- ./export:/usr/src/paperless/export
     env_file: docker-compose.env
     environment:
       PAPERLESS_REDIS: redis://broker:6379
